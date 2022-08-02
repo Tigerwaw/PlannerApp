@@ -15,7 +15,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
   daytab_sizer = new wxBoxSizer(wxHORIZONTAL);
   task_sizer = new wxBoxSizer(wxVERTICAL);
 
-  wxButton* addNewTask_button = new wxButton(task_panel, wxID_ANY, "Add New Task");
+  wxButton* addNewTask_button = new wxButton(task_panel, wxID_ANY, "Add New Task", wxDefaultPosition, wxSize(800, -1));
   addNewTask_button->Bind(wxEVT_BUTTON, &MainFrame::OnCreateTaskClick, this);
   task_sizer->Add(addNewTask_button, 0, wxEXPAND | wxALL, 10);
 
@@ -48,15 +48,30 @@ void MainFrame::InitializeDayButtons(wxPanel* parent_panel)
   day_buttons[6]->Bind(wxEVT_BUTTON, &MainFrame::OnButtonClicked_Sunday, this);
 }
 
+void MainFrame::ReloadFrames()
+{
+  this->SetSizerAndFit(mainframe_sizer);
+  task_panel->SetSizerAndFit(task_sizer);
+}
+
 // ---
 // EVENT FUNCTIONS ---
 // --
 
 void MainFrame::OnCreateTaskClick(wxCommandEvent& evt)
 {
-  tasks.push_back(new Task(task_panel, wxSize(-1, 50), task_sizer));
+  Task* task = new Task(task_panel, wxSize(-1, 50), task_sizer);
+  tasks.push_back(task);
+  task->Bind(wxEVT_DESTROY, &MainFrame::OnDeleteTask, this);
+
   wxLogStatus("Created Task!");
-  this->SetSizerAndFit(mainframe_sizer);
+  ReloadFrames();
+}
+
+void MainFrame::OnDeleteTask(wxWindowDestroyEvent& evt)
+{
+  wxLogStatus("Deleted Task!");
+  ReloadFrames();
 }
 
 void MainFrame::OnButtonClicked_Monday(wxCommandEvent& evt)

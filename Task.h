@@ -14,5 +14,8 @@ public:
 private:
   wxTimePickerCtrl* timePicker;
   wxTextCtrl* textEntry;
+  wxButton* deleteButton;
+
+  void OnDeleteTaskClick(wxCommandEvent& evt);
 };
 

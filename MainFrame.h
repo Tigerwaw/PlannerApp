@@ -30,7 +30,9 @@ private:
   void OnButtonClicked_Sunday(wxCommandEvent& evt);
 
   void OnCreateTaskClick(wxCommandEvent& evt);
+  void OnDeleteTask(wxWindowDestroyEvent& evt);
 
   void InitializeDayButtons(wxPanel* parent_panel);
+  void ReloadFrames();
 };
 
