@@ -54,6 +54,18 @@ void MainFrame::ReloadFrames()
   task_panel->SetSizerAndFit(task_sizer);
 }
 
+void MainFrame::SaveToFile()
+{
+  ofstream SaveFile("PlannerApp_SaveFile.txt");
+
+  for (size_t i = 0; i < tasks.size(); i++)
+  {
+    SaveFile << tasks.at(i)->GetTime() + " " + tasks.at(i)->GetText() << endl;
+  }
+
+  SaveFile.close();
+}
+
 // ---
 // EVENT FUNCTIONS ---
 // --
@@ -76,6 +88,7 @@ void MainFrame::OnDeleteTask(wxWindowDestroyEvent& evt)
 
 void MainFrame::OnButtonClicked_Monday(wxCommandEvent& evt)
 {
+  SaveToFile();
   selected_day = "Monday";
   wxLogStatus(wxString::Format("Monday Selected"));
 }

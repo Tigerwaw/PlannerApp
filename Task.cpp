@@ -6,7 +6,11 @@ Task::Task(wxWindow* parent_panel, const wxSize& size, wxBoxSizer* sizer) : wxPa
   sizer->Add(this, 0, wxEXPAND | wxALL, 10);
 
   timePicker = new wxTimePickerCtrl(this, wxID_ANY, wxDateTime(0, 0, 0));
-  textEntry = new wxTextCtrl(this, wxID_ANY, "Task");
+  timePicker->Bind(wxEVT_TIME_CHANGED, &Task::OnTimeUpdate, this);
+
+  textEntry = new wxTextCtrl(this, wxID_ANY, "Task", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+  textEntry->Bind(wxEVT_TEXT, &Task::OnTextUpdate, this);
+
   deleteButton = new wxButton(this, wxID_ANY, "X");
   deleteButton->Bind(wxEVT_BUTTON, &Task::OnDeleteTaskClick, this);
 
@@ -27,4 +31,26 @@ void Task::OnDeleteTaskClick(wxCommandEvent& evt)
 {
   this->HideWithEffect(wxSHOW_EFFECT_SLIDE_TO_LEFT);
   this->Destroy();
+}
+
+void Task::OnTimeUpdate(wxDateEvent& evt)
+{
+  time = timePicker->GetValue().Format(wxT("%H:%M"));
+  wxLogStatus(wxString("Saved Time: " + time));
+}
+
+void Task::OnTextUpdate(wxCommandEvent& evt)
+{
+  text = textEntry->GetValue();
+  wxLogStatus(wxString("Saved Text: " + text));
+}
+
+string Task::GetTime()
+{
+  return time;
+}
+
+string Task::GetText()
+{
+  return text;
 }

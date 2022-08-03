@@ -2,6 +2,7 @@
 #include <wx/wx.h>
 #include <wx/timectrl.h>
 #include <iostream>
+#include <fstream> 
 #include <vector>
 #include "Task.h"
 
@@ -12,7 +13,8 @@ class MainFrame : public wxFrame
 public:
   MainFrame(const wxString& title);
 
-protected:
+private:
+  bool isFileSaved;
   wxString selected_day = "M";
   vector<Task*> tasks;
   wxPanel* task_panel;
@@ -20,7 +22,6 @@ protected:
   wxBoxSizer* mainframe_sizer;
   wxBoxSizer* daytab_sizer;
 
-private:
   void OnButtonClicked_Monday(wxCommandEvent& evt);
   void OnButtonClicked_Tuesday(wxCommandEvent& evt);
   void OnButtonClicked_Wednesday(wxCommandEvent& evt);
@@ -34,5 +35,6 @@ private:
 
   void InitializeDayButtons(wxPanel* parent_panel);
   void ReloadFrames();
+  void SaveToFile();
 };
 
